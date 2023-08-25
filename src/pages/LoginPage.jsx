@@ -62,7 +62,12 @@ export const LoginPage = () => {
           },
         }
       );
+
+      // decodificar token
       const tokenDecodificado = jwt(data.token);
+
+      // Mostrar el token en la consola
+      console.log("Token decodificado:", tokenDecodificado);
       dispatch({
         type: types.setUserState,
         payload: tokenDecodificado,
@@ -82,6 +87,7 @@ export const LoginPage = () => {
       });
     }
 
+    // Almacenando datos en localStorage
     if (formData.rememberMe) {
       localStorage.setItem("loginFormData", JSON.stringify(formData));
     } else {

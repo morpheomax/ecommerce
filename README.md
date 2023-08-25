@@ -1,4 +1,4 @@
-# Sistema Eccomerce React + Vite
+# Sistema Ecomerce React + Vite
 
 Esta tienda web es una plataforma de comercio electrónico desarrollada con la tecnología MERN (MongoDB, Express.js, React.js y Node.js) y se encuentra alojada en Render.com. Proporciona una experiencia de compra en línea tanto para clientes como para administradores.
 

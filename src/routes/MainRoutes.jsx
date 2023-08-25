@@ -1,11 +1,20 @@
 import { Route, Routes } from "react-router-dom";
+
+// Import Publicos
 import { HomePage } from "../pages/HomePage";
 import { AboutPage } from "../pages/AboutPage";
 import { CategoriesPage } from "../pages/CategoriesPage";
-
 import { ContactPage } from "../pages/ContactPage";
 import { Registro } from "../pages/RegisterPage";
 import { LoginPage } from "../pages/LoginPage";
+
+// Import Cliente registrado
+
+import { CustomerPage } from "../pages/user/CustomerPage";
+
+// import Administracion
+import { AdminPage } from "../pages/admin/AdminPage";
+import { VendorPage } from "../pages/admin/VendorPage";
 
 export const MainRoutes = () => {
   return (
@@ -20,6 +29,14 @@ export const MainRoutes = () => {
 
         <Route path="login" element={<LoginPage />} />
         <Route path="registro" element={<Registro />} />
+
+        {/* Ruta Cliente logueado */}
+        <Route path="user" element={<CustomerPage />} />
+
+        {/* Ruta Administracion */}
+
+        <Route path="admin" element={<AdminPage />} />
+        <Route path="vendor" element={<VendorPage />} />
       </Routes>
     </>
   );

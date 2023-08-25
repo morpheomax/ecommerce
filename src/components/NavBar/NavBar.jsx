@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MarqueeBar } from "../MarqueeBar/MarqueeBar";
 import { UserContext } from "../../context/user/userContext";
 import { config } from "../../helpers/config";
@@ -56,6 +56,11 @@ export const NavBar = () => {
                         <p>Bienvenido {state.user.username}</p>
                         <Link className="nav-link" to="/perfil">
                           Perfil
+                        </Link>
+                      </NavDropdown.Item>
+                      <NavDropdown.Item>
+                        <Link className="nav-link" to="/admin">
+                          Administración
                         </Link>
                       </NavDropdown.Item>
                       <NavDropdown.Item>

@@ -1,0 +1,3 @@
+.inverted-image {
+    filter: invert(100%); /* Invierte el color al 100% */
+  }

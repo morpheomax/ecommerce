@@ -2,15 +2,6 @@
 
 Esta tienda web es una plataforma de comercio electrónico desarrollada con la tecnología MERN (MongoDB, Express.js, React.js y Node.js) y se encuentra alojada en Render.com. Proporciona una experiencia de compra en línea tanto para clientes como para administradores.
 
-### Dependencias utilizadas
-
-"axios": "^1.4.0",
-"bootstrap-icons": "^1.10.5",
-"jwt-decode": "^3.1.2",
-"react-bootstrap": "^2.8.0",
-"react-dom": "^18.2.0",
-"react-router-dom": "^6.14.2"
-
 ## Características Principales
 
 ### Para Clientes
@@ -55,14 +46,17 @@ Esta tienda web es una plataforma de comercio electrónico desarrollada con la t
 - Node.js para la lógica del servidor.
 - Render.com para el alojamiento en la web.
 
-## Contribuciones y Problemas
+### Dependencias utilizadas
 
-Si deseas contribuir o informar sobre problemas en este proyecto, por favor abre un issue o crea una solicitud de extracción. ¡Tus contribuciones son bienvenidas!
+- "axios": "^1.4.0",
+- "bootstrap-icons": "^1.10.5",
+- "jwt-decode": "^3.1.2",
+- "react-bootstrap": "^2.8.0",
+- "react-dom": "^18.2.0",
+- "react-router-dom": "^6.14.2"
 
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT.
 
 ---
-
-¡Disfruta explorando y administrando tu tienda web de productos para yoga, inciensos y velas!

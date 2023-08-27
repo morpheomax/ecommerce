@@ -2,8 +2,9 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { MarqueeBar } from "../MarqueeBar/MarqueeBar";
 import { UserContext } from "../../context/user/userContext";
-import { config } from "../../helpers/config";
+import { config } from "../../config/config";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Accordion from "react-bootstrap/Accordion";
 import { types } from "../../context/user/userReducer";
 
 const categories = ["Joyas de plata", "Inciensos", "Aroma terapia", "Velas"];
@@ -126,48 +127,113 @@ export const NavBar = () => {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="offcanvas-body">
-              <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to="/">
-                    Home
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="./nosotros">
-                    Nosotros
-                  </Link>
-                </li>
 
-                {/* Lista desplegable */}
-                <NavDropdown title="Categorias" id="offcanvasNavbarDropdown">
-                  {categories.map((category, index) => (
-                    <NavDropdown.Item key={index}>
-                      <Link className="nav-link" to={`categorias/${category}`}>
-                        {category}
+            {/* -------------------------- */}
+
+            {/* Sesion iniciada Administrado*/}
+            {state?.user ? ( // Verificar si el usuario está autenticado
+              <>
+                <Accordion>
+                  {/*defaultActiveKey="0"*/}
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>Administrar Pedidos</Accordion.Header>
+                    <Accordion.Body>- Ver Pedidos</Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header>Administrar Tienda</Accordion.Header>
+                    <Accordion.Body>- Datos de la tienda - RRSS</Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header>Usuarios</Accordion.Header>
+                    <Accordion.Body>
+                      - Usuarios Tienda - Clientes - Perfiles
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header>Categorías</Accordion.Header>
+                    <Accordion.Body>
+                      - Categorías y SubCategorias
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="4">
+                    <Accordion.Header>Variantes</Accordion.Header>
+                    <Accordion.Body>
+                      - Ver Variantes - Crear Variantes
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="5">
+                    <Accordion.Header>Productos</Accordion.Header>
+                    <Accordion.Body>
+                      - Ver Productos - Crear/Editar Productos - Stock
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </>
+            ) : (
+              <>
+                {/* Vista ususario */}
+                <div className="offcanvas-body">
+                  <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li className="nav-item">
+                      <Link
+                        className="nav-link active"
+                        aria-current="page"
+                        to="/"
+                      >
+                        Home
                       </Link>
-                    </NavDropdown.Item>
-                  ))}
-                </NavDropdown>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="./nosotros">
+                        Nosotros
+                      </Link>
+                    </li>
 
-                <li className="nav-item">
-                  <Link className="nav-link" to="./contacto">
-                    Contacto
-                  </Link>
-                </li>
-              </ul>
-              <form className="d-flex mt-3" role="search">
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Buscar"
-                  aria-label="Search"
-                />
-                <button className="btn btn-outline-dark" type="submit">
-                  Buscar
-                </button>
-              </form>
-            </div>
+                    {/* Lista desplegable */}
+                    <NavDropdown
+                      title="Categorias"
+                      id="offcanvasNavbarDropdown"
+                    >
+                      {categories.map((category, index) => (
+                        <NavDropdown.Item key={index}>
+                          <Link
+                            className="nav-link"
+                            to={`categorias/${category}`}
+                          >
+                            {category}
+                          </Link>
+                        </NavDropdown.Item>
+                      ))}
+                    </NavDropdown>
+
+                    <li className="nav-item">
+                      <Link className="nav-link" to="./contacto">
+                        Contacto
+                      </Link>
+                    </li>
+                  </ul>
+
+                  <form className="d-flex mt-3" role="search">
+                    <input
+                      className="form-control me-2"
+                      type="search"
+                      placeholder="Buscar"
+                      aria-label="Search"
+                    />
+                    <button className="btn btn-outline-dark" type="submit">
+                      Buscar
+                    </button>
+                  </form>
+                </div>
+              </>
+            )}
+
+            {/* -------------------------- */}
           </div>
         </div>
       </nav>

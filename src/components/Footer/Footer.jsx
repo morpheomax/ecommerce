@@ -1,11 +1,13 @@
 import Container from "react-bootstrap/Container";
+import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { config } from "../../helpers/config";
+import { config } from "../../config/config";
 import "./Footer.css"; // Importa las variables desde config.js
 
+const categories = ["Joyas de plata", "Inciensos", "Aroma terapia", "Velas"];
 export const Footer = () => {
   return (
     <footer>
@@ -31,17 +33,19 @@ export const Footer = () => {
             </div>
           </Col>
           <Col>
-            <h4>CATEGORIAS</h4>
+            <h5>CATEGORIAS</h5>
             <ul className="list-unstyled">
-              {Array(4)
-                .fill()
-                .map((_, index) => (
-                  <li key={index}>Lista</li>
-                ))}
+              {categories.map((category, index) => (
+                <li key={index}>
+                  <Link className="nav-link" to={`categorias/${category}`}>
+                    {category}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </Col>
           <Col>
-            <h4>LINKS</h4>
+            <h5>LINKS</h5>
             <ul className="list-unstyled">
               {Array(4)
                 .fill()

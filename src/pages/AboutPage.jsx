@@ -1,5 +1,5 @@
 import { Container, Row, Col, Image } from "react-bootstrap";
-import { config } from "../helpers/config";
+import { config } from "../config/config";
 
 export const AboutPage = () => {
   return (

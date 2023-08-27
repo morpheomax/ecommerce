@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../../config/axios";
 
 export const UserAdmin = () => {
   const [users, setUsers] = useState([]);
@@ -7,8 +7,8 @@ export const UserAdmin = () => {
 
   useEffect(() => {
     // Realizar la solicitud GET a la API para obtener la lista de usuarios
-    axios
-      .get("https://backendproyecto5.onrender.com/users/")
+    axiosInstance
+      .get("/users/")
       .then((response) => {
         if (response.data && Array.isArray(response.data.detail)) {
           // Verificar si la respuesta contiene un arreglo en la propiedad "detail"
@@ -23,6 +23,15 @@ export const UserAdmin = () => {
         setIsLoading(false);
       });
   }, []);
+
+  // Configurar el evento SSE para recibir actualizaciones en tiempo real
+  const eventSource = new EventSource("/events"); // Reemplaza "/events" con la ruta correcta de SSE en tu servidor
+
+  eventSource.addEventListener("userCreated", (event) => {
+    // Cuando se recibe un evento de usuario creado, actualiza la lista de usuarios
+    const newUser = JSON.parse(event.data);
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+  });
 
   // Filtrar usuarios por rol "Cliente"
   const clientes = users.filter((user) => user.rol === "cliente");

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MarqueeBar } from "../MarqueeBar/MarqueeBar";
 import { UserContext } from "../../context/user/userContext";
 import { config } from "../../config/config";
@@ -13,13 +13,15 @@ export const NavBar = () => {
   // Obtener el estado del contexto de usuario
   const [state, dispatch] = useContext(UserContext);
   // Navegación para redirigir a otras páginas
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
+    console.log("Cerrando sesión");
     // Aquí coloca la lógica para cerrar la sesión del usuario
     // Por ejemplo, puedes llamar a una función de tu contexto de usuario para hacerlo
     dispatch({ type: types.setLogout }); // Ejemplo de cómo podría llamarse una acción de logout
     // Redirigir al usuario a la página principal
-    // navigate("/");
+    navigate("/");
   };
 
   return (
@@ -51,31 +53,74 @@ export const NavBar = () => {
               <div className="col-1">
                 <NavDropdown title={<i className="bi bi-person-circle"></i>}>
                   {state?.user ? ( // Verificar si el usuario está autenticado
-                    <>
-                      <NavDropdown.Item>
-                        {/* Mostrar el nombre del usuario */}
-                        <p>Bienvenido {state.user.username}</p>
-                        <Link className="nav-link" to="/perfil">
-                          Perfil
-                        </Link>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <Link className="nav-link" to="/admin">
-                          Administración
-                        </Link>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <Link className="nav-link" to="/configuracion">
-                          Configuración
-                        </Link>
-                      </NavDropdown.Item>
-                      <NavDropdown.Item>
-                        <Link className="btn" onClick={handleLogout}>
-                          Cerrar Sesión
-                        </Link>
-                      </NavDropdown.Item>
-                    </>
+                    state.user.rol !== "cliente" ? (
+                      <>
+                        <NavDropdown.Item>
+                          {/* Mostrar el nombre del usuario */}
+                          <p>Hola! {state.user.name}</p>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link className="nav-link" to="/perfil">
+                            Perfil
+                          </Link>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link className="nav-link" to="/admin">
+                            Administración
+                          </Link>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link className="nav-link" to="/configuracion">
+                            Configuración
+                          </Link>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link className="btn" onClick={handleLogout}>
+                            Cerrar Sesión
+                          </Link>
+                        </NavDropdown.Item>
+                      </>
+                    ) : state.user.rol === "cliente" ? (
+                      <>
+                        <NavDropdown.Item>
+                          {/* Mostrar el nombre del usuario */}
+                          <p>Bienvenido {state.user.name}</p>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link className="nav-link" to="/perfil">
+                            Perfil
+                          </Link>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link className="nav-link" to="/direcciones">
+                            Direcciones
+                          </Link>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link className="nav-link" to="/miscompras">
+                            Mis Compras
+                          </Link>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link
+                            className="nav-link"
+                            to="/misproductosguardados"
+                          >
+                            Mis Productos Guardados
+                          </Link>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item>
+                          <Link className="btn" onClick={handleLogout}>
+                            Cerrar Sesión
+                          </Link>
+                        </NavDropdown.Item>
+                      </>
+                    ) : (
+                      // Rol desconocido o no manejado
+                      <NavDropdown.Item>Rol no válido</NavDropdown.Item>
+                    )
                   ) : (
+                    // Usuario no autenticado
                     <>
                       <NavDropdown.Item>
                         <Link className="nav-link" to="/login">
@@ -131,7 +176,7 @@ export const NavBar = () => {
             {/* -------------------------- */}
 
             {/* Sesion iniciada Administrado*/}
-            {state?.user ? ( // Verificar si el usuario está autenticado
+            {state?.user && state.user.rol !== "cliente" ? ( // Verificar si el usuario está autenticado y su rol
               <>
                 <Accordion>
                   {/*defaultActiveKey="0"*/}

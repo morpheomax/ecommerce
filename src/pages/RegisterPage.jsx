@@ -5,29 +5,30 @@ import { Login } from "../components/Login/login";
 import { useContext } from "react";
 import { UserContext } from "../context/user/userContext";
 import { types } from "../context/user/userReducer";
-import axios from "axios";
-import jwt from "jwt-decode";
 
-const initialForm = {
-  name: "",
-  lastname: "",
-  email: "",
-  username: "",
-  password: "",
-  address: "",
-  addressNumber: "",
-  commune: "",
-  city: "",
-  reference: "",
-  postalcode: "",
-  phone: "",
-  aceptaTerminos: false,
-  autorizaTratamiento: false,
-};
+import axiosInstance from "../config/axios";
+import jwt from "jwt-decode";
 
 export const Registro = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const initialForm = {
+    name: "",
+    lastname: "",
+    email: "",
+    username: "",
+    password: "",
+    address: "",
+    addressNumber: "",
+    commune: "",
+    city: "",
+    reference: "",
+    postalcode: "",
+    phone: "",
+    aceptaTerminos: false,
+    autorizaTratamiento: false,
+  };
 
   // Navegación para redirigir a otras páginas
   const navigate = useNavigate();
@@ -51,8 +52,8 @@ export const Registro = () => {
   const [emailExists, setEmailExists] = useState(false);
 
   // Manejar cambios en los campos del formulario
-  const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
     setFormData((prevData) => ({
       ...prevData,
@@ -67,9 +68,7 @@ export const Registro = () => {
   // Función para verificar si el correo electrónico ya está registrado
   const checkEmailExists = async (email) => {
     try {
-      const response = await axios.get(
-        `https://backendproyecto5.onrender.com/users/check-email/${email}`
-      );
+      const response = await axiosInstance.get(`/users/check-email/${email}`);
       setEmailExists(response.data.exists);
     } catch (error) {
       console.error("Error al verificar el correo electrónico:", error);
@@ -77,8 +76,8 @@ export const Registro = () => {
   };
 
   // Manejar cambios en el campo de correo electrónico
-  const handleEmailChange = (event) => {
-    const { name, value } = event.target;
+  const handleEmailChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -93,8 +92,8 @@ export const Registro = () => {
   };
 
   // Manejar el envío del formulario
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
 
     // Validar campos del formulario y crear un objeto de errores
@@ -123,15 +122,11 @@ export const Registro = () => {
 
     try {
       // Enviar datos al servidor para el registro
-      const { data } = await axios.post(
-        "https://backendproyecto5.onrender.com/users/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const { data } = await axiosInstance.post("/users/", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       // Decodificar el token de respuesta
       const tokenDecodificado = jwt(data.token);

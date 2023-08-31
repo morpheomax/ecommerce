@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import axiosInstance from "../../../config/axios";
 
-export const UserAdmin = () => {
+export const UserAdmin = ({ setEditUser, refresh }) => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,7 +23,30 @@ export const UserAdmin = () => {
         console.error("Error al obtener la lista de usuarios:", error);
         setIsLoading(false);
       });
-  }, []);
+  }, [refresh]);
+
+  // Función para eliminar un usuario por su ID
+  const handleDeleteUser = async (userId) => {
+    const token = JSON.parse(localStorage.getItem("loginFormData"));
+    console.log(userId);
+    try {
+      // Realizar la solicitud DELETE a la API para eliminar el usuario
+      await axiosInstance.delete(`/users/${userId}`, {
+        headers: { authorization: `Token ${token}` },
+      });
+
+      // Actualizar la lista de usuarios después de eliminar
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+    } catch (error) {
+      console.error("Error al eliminar el usuario:", error);
+    }
+  };
+
+  // Funcion Editar
+
+  const handleEditUser = (user) => {
+    setEditUser(user);
+  };
 
   // Configurar el evento SSE para recibir actualizaciones en tiempo real
   const eventSource = new EventSource("/events"); // Reemplaza "/events" con la ruta correcta de SSE en tu servidor
@@ -56,6 +80,7 @@ export const UserAdmin = () => {
                     <th>Apellido</th>
                     <th>Nombre de Usuario</th>
                     <th>Rol</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -65,6 +90,14 @@ export const UserAdmin = () => {
                       <td>{cliente.lastname}</td>
                       <td>{cliente.username}</td>
                       <td>{cliente.rol}</td>
+                      <td>
+                        <button onClick={() => handleEditUser(cliente)}>
+                          Editar
+                        </button>
+                        <button onClick={() => handleDeleteUser(cliente._id)}>
+                          Eliminar
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -81,6 +114,7 @@ export const UserAdmin = () => {
                     <th>Apellido</th>
                     <th>Nombre de Usuario</th>
                     <th>Rol</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -90,6 +124,16 @@ export const UserAdmin = () => {
                       <td>{superAdmin.lastname}</td>
                       <td>{superAdmin.username}</td>
                       <td>{superAdmin.rol}</td>
+                      <td>
+                        <button onClick={() => handleEditUser(superAdmin)}>
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDeleteUser(superAdmin._id)}
+                        >
+                          Eliminar
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

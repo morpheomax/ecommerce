@@ -1,4 +1,6 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import { Button, Form, Alert, Row, Col, Container } from "react-bootstrap";
 import { useContext } from "react";
 import { UserContext } from "../../../context/user/userContext";
@@ -6,31 +8,38 @@ import { types } from "../../../context/user/userReducer";
 import axiosInstance from "../../../config/axios";
 import jwt from "jwt-decode";
 
-const initialForm = {
-  name: "",
-  lastname: "",
-  email: "",
-  username: "",
-  password: "",
-  address: "",
-  addressNumber: "",
-  commune: "",
-  city: "",
-  reference: "",
-  postalcode: "",
-  phone: "",
-  rol: "",
-};
-
-export const CreateUser = () => {
+export const CreateUser = ({ editUser, setRefresh }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const initialForm = {
+    name: "",
+    lastname: "",
+    email: "",
+    username: "",
+    password: "",
+    address: "",
+    addressNumber: "",
+    commune: "",
+    city: "",
+    reference: "",
+    postalcode: "",
+    phone: "",
+    rol: "",
+  };
   // Obtener el contexto del usuario para manejar el estado global de autenticación
   const [, dispatch] = useContext(UserContext);
 
   // Estado para los datos del formulario
   const [formData, setFormData] = useState(initialForm);
+
+  useEffect(() => {
+    if (editUser) {
+      setFormData(editUser);
+    }
+  }, [editUser]);
+  console.log(formData);
+  console.log(editUser);
 
   // Estado para manejar los errores del formulario
   const [errors, setErrors] = useState(initialForm);
@@ -86,8 +95,8 @@ export const CreateUser = () => {
   };
 
   // Manejar el envío del formulario
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsLoading(true);
 
     // Restablecer los mensajes de error y éxito
@@ -125,20 +134,20 @@ export const CreateUser = () => {
         },
       });
 
-      // Decodificar el token de respuesta
-      const tokenDecodificado = jwt(data.token);
-      console.log(tokenDecodificado);
+      // // Decodificar el token de respuesta
+      // const tokenDecodificado = jwt(data.token);
+      // console.log(tokenDecodificado);
 
-      // Actualizar el estado global de usuario autenticado
-      dispatch({
-        type: types.setUserState,
-        payload: tokenDecodificado,
-      });
+      // // Actualizar el estado global de usuario autenticado
+      // dispatch({
+      //   type: types.setUserState,
+      //   payload: tokenDecodificado,
+      // });
 
       // Limpiar el formulario y mostrar mensaje de registro completado
       setFormData(initialForm);
       setRegistrationSuccess(true);
-
+      setRefresh(data);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -153,6 +162,37 @@ export const CreateUser = () => {
   // Función para alternar la visibilidad de la contraseña
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const actualizar = async (e) => {
+    const token = JSON.parse(localStorage.getItem("loginFormData"));
+    try {
+      console.log("actualizar");
+      setIsLoading(true);
+      // Enviar datos al servidor para el registro
+      const { data } = await axiosInstance.put(
+        `/users/${formData._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Token ${token}`,
+          },
+        }
+      );
+      setIsLoading(false);
+      console.log(data);
+      setFormData(initialForm);
+      setRefresh(data);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error al actualizar:", error);
+      // Mostrar un mensaje de error al usuario
+      setError(
+        "Error al actualizar usuario. Por favor, revise los datos e inténtelo de nuevo."
+      );
+      setFormData(initialForm);
+    }
   };
 
   return (
@@ -405,15 +445,25 @@ export const CreateUser = () => {
               </Col>
             </Row>
             <Row></Row>
-
-            <Button
-              type="submit"
-              disabled={isLoading}
-              variant="primary"
-              className="mb-3"
-            >
-              {isLoading ? "Guardando..." : "Crear"}
-            </Button>
+            {editUser ? (
+              <Button
+                onClick={actualizar}
+                disabled={isLoading}
+                variant="primary"
+                className="mb-3"
+              >
+                {isLoading ? "Actualizando..." : "Actualizar"}
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                disabled={isLoading}
+                variant="primary"
+                className="mb-3"
+              >
+                {isLoading ? "Guardando..." : "Crear"}
+              </Button>
+            )}
           </Form>
         </div>
       </Container>

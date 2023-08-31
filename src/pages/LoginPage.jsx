@@ -3,13 +3,15 @@ import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/user/userContext";
 import { types } from "../context/user/userReducer";
-import axios from "axios";
+
+import axiosInstance from "../config/axios";
 import jwt from "jwt-decode";
 
 export const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [, dispatch] = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,10 +20,10 @@ export const LoginPage = () => {
   const navigate = useNavigate();
 
   // Nuevo estado para el inicio de sesión
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [, setIsLoggedIn] = useState(false);
 
   // Estados para manejar mensajes de alerta
-  const [successMessage, setSuccessMessage] = useState(null);
+  const [, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
@@ -53,21 +55,23 @@ export const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const { data } = await axios.post(
-        "https://backendproyecto5.onrender.com/users/login",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const { data } = await axiosInstance.post("/users/login", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       // decodificar token
       const tokenDecodificado = jwt(data.token);
 
+      // Almacenando datos en localStorage, de este modo lo puedo mantener para usar en provider y mantengo la sesion activa aun actualizando la pagina
+      if (formData.rememberMe) {
+        localStorage.setItem("loginFormData", JSON.stringify(data.token));
+      } else {
+        localStorage.removeItem("loginFormData");
+      }
       // Mostrar el token en la consola
-      console.log("Token decodificado:", tokenDecodificado);
+      // console.log("Token decodificado:", tokenDecodificado);
       dispatch({
         type: types.setUserState,
         payload: tokenDecodificado,
@@ -75,23 +79,18 @@ export const LoginPage = () => {
       setIsLoggedIn(true); // Establecer isLoggedIn en true al iniciar sesión con éxito
       setSuccessMessage("Conexión exitosa");
       setIsLoading(false);
+      window.alert("Usuario Logueado");
       navigate("/");
     } catch (error) {
       console.log(error);
       setIsLoading(false);
       // Mostrar un mensaje de error usando el componente de Alerta de Bootstrap
       setErrorMessage("Error al iniciar sesión");
+
       dispatch({
         type: types.setError,
         payload: error,
       });
-    }
-
-    // Almacenando datos en localStorage
-    if (formData.rememberMe) {
-      localStorage.setItem("loginFormData", JSON.stringify(formData));
-    } else {
-      localStorage.removeItem("loginFormData");
     }
   };
 

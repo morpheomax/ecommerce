@@ -3,7 +3,8 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom"; // Importa el componente Link
 import { UserContext } from "../../context/user/userContext";
 import { types } from "../../context/user/userReducer";
-import axios from "axios";
+
+import axiosInstance from "../../config/axios";
 import jwt from "jwt-decode";
 // eslint-disable-next-line react/prop-types
 export const Login = ({ showModal, handleCloseModal }) => {
@@ -34,15 +35,11 @@ export const Login = ({ showModal, handleCloseModal }) => {
     console.log("submit");
     try {
       console.log(user);
-      const { data } = await axios.post(
-        "https://backendproyecto5.onrender.com/users/login",
-        user,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const { data } = await axiosInstance.post("/users/login", user, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log(data);
       const tokenDecodificado = jwt(data.token);
       dispatch({

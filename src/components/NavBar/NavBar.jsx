@@ -193,14 +193,18 @@ export const NavBar = () => {
                   <Accordion.Item eventKey="2">
                     <Accordion.Header>Usuarios</Accordion.Header>
                     <Accordion.Body>
-                      - Usuarios Tienda - Clientes - Perfiles
+                      <Link to="/useradmin" className="nav-link">
+                        - Administrar Usuarios
+                      </Link>
                     </Accordion.Body>
                   </Accordion.Item>
 
                   <Accordion.Item eventKey="3">
                     <Accordion.Header>Categorías</Accordion.Header>
                     <Accordion.Body>
-                      - Categorías y SubCategorias
+                      <Link to="/categories" className="nav-link">
+                        - Administrar Categorías
+                      </Link>
                     </Accordion.Body>
                   </Accordion.Item>
 

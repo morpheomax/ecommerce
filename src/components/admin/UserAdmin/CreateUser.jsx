@@ -197,7 +197,7 @@ export const CreateUser = ({ editUser, setRefresh }) => {
 
   return (
     <>
-      <Container fluid>
+      <Container fluid className="mt-4">
         <div className="card p-4 shadow">
           <h5 className="mb-4 text-center">Registro de Usuarios</h5>
           {registrationSuccess && (
@@ -444,26 +444,27 @@ export const CreateUser = ({ editUser, setRefresh }) => {
                 </Form.Group>
               </Col>
             </Row>
-            <Row></Row>
-            {editUser ? (
-              <Button
-                onClick={actualizar}
-                disabled={isLoading}
-                variant="primary"
-                className="mb-3"
-              >
-                {isLoading ? "Actualizando..." : "Actualizar"}
-              </Button>
-            ) : (
-              <Button
-                type="submit"
-                disabled={isLoading}
-                variant="primary"
-                className="mb-3"
-              >
-                {isLoading ? "Guardando..." : "Crear"}
-              </Button>
-            )}
+            <Row className="m-2">
+              {editUser ? (
+                <Button
+                  onClick={actualizar}
+                  disabled={isLoading}
+                  variant="success"
+                  className="mb-3"
+                >
+                  {isLoading ? "Actualizando..." : "Actualizar"}
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  variant="primary"
+                  className="mb-3"
+                >
+                  {isLoading ? "Guardando..." : "Crear"}
+                </Button>
+              )}
+            </Row>
           </Form>
         </div>
       </Container>

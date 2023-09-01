@@ -1,4 +1,8 @@
-import { useContext } from "react";
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+
+import { useState, useEffect, useContext } from "react";
+import axiosInstance from "../../config/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { MarqueeBar } from "../MarqueeBar/MarqueeBar";
 import { UserContext } from "../../context/user/userContext";
@@ -7,13 +11,17 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Accordion from "react-bootstrap/Accordion";
 import { types } from "../../context/user/userReducer";
 
-const categories = ["Joyas de plata", "Inciensos", "Aroma terapia", "Velas"];
+// const categories = ["Joyas de plata", "Inciensos", "Aroma terapia", "Velas"];
 
 export const NavBar = () => {
   // Obtener el estado del contexto de usuario
   const [state, dispatch] = useContext(UserContext);
   // Navegación para redirigir a otras páginas
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [store, setStore] = useState(null);
+  const [refresh, setRefresh] = useState(null);
+  const [categories, setCategories] = useState(null);
 
   const handleLogout = () => {
     console.log("Cerrando sesión");
@@ -23,6 +31,42 @@ export const NavBar = () => {
     // Redirigir al usuario a la página principal
     navigate("/");
   };
+
+  // GET de la coleccion Store
+  useEffect(() => {
+    axiosInstance
+      .get("/store")
+      .then((response) => {
+        if (response.data && Array.isArray(response.data.detail)) {
+          setStore(response.data.detail);
+        } else {
+          console.error("Respuesta inesperada de la API:", response.data);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener la lista de Productos:", error);
+        setIsLoading(false);
+      });
+  }, [refresh]);
+
+  // GET de la coleccion Categories
+  useEffect(() => {
+    axiosInstance
+      .get("/categories")
+      .then((response) => {
+        if (response.data && Array.isArray(response.data.detail)) {
+          setCategories(response.data.detail);
+        } else {
+          console.error("Respuesta inesperada de la API:", response.data);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener la lista de Productos:", error);
+        setIsLoading(false);
+      });
+  }, [refresh]);
 
   return (
     <>
@@ -47,7 +91,9 @@ export const NavBar = () => {
                 <i className="bi bi-search"></i>
               </div>
               <Link className="col-5 mx-auto navbar-brand" to="/">
-                <strong>{config.nameStore}</strong>
+                <strong style={{ textTransform: "uppercase" }}>
+                  {store?.map((store) => store.name)}
+                </strong>
               </Link>
               {/* iconos barra Nav */}
               <div className="col-1">
@@ -254,13 +300,13 @@ export const NavBar = () => {
                       title="Categorias"
                       id="offcanvasNavbarDropdown"
                     >
-                      {categories.map((category, index) => (
-                        <NavDropdown.Item key={index}>
+                      {categories.map((category) => (
+                        <NavDropdown.Item key={category._id}>
                           <Link
                             className="nav-link"
-                            to={`categorias/${category}`}
+                            to={`categorias/${category.name}`}
                           >
-                            {category}
+                            {category.name}
                           </Link>
                         </NavDropdown.Item>
                       ))}

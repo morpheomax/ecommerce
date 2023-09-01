@@ -129,8 +129,8 @@ export const Products = () => {
       //     )
       //   );
 
-      console.log(data);
-      console.log(data._id);
+      // console.log(data);
+      // console.log(data._id);
       // Limpiar el formulario
       setFormData(initialForm);
       //   Restablece selectedCategory

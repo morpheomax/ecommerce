@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Alert, Row, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { Login } from "../components/Login/login";
+import { Login } from "../components/Login/Login";
 import { useContext } from "react";
 import { UserContext } from "../context/user/userContext";
 import { types } from "../context/user/userReducer";

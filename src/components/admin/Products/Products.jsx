@@ -8,14 +8,15 @@ import { Table } from "react-bootstrap";
 
 const initialForm = {
   idUser: "",
+  img: "",
   sku: "",
   name: "",
   description: "",
   category: "",
   subcategory: "",
   stock: "",
+  price: "",
   variants: "",
-  img: "",
 };
 
 export const Products = () => {
@@ -27,10 +28,30 @@ export const Products = () => {
 
   // Declarar un estado adicional para el elemento seleccionado
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+  // Declarar un estado adicional para el elemento seleccionado
+  const [category, setCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [refresh, setRefresh] = useState(null);
 
-  // Cargar la lista de categorías al cargar la página
+  // Leer la lista de Categorias al cargar la página
+  useEffect(() => {
+    axiosInstance
+      .get("/categories")
+      .then((response) => {
+        if (response.data && Array.isArray(response.data.detail)) {
+          setCategory(response.data.detail);
+        } else {
+          console.error("Respuesta inesperada de la API:", response.data);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener la lista de Categorías:", error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  // Leer la lista de products al cargar la página
   useEffect(() => {
     axiosInstance
       .get("/products")
@@ -53,6 +74,9 @@ export const Products = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Actualiza formData.category con el valor seleccionado
+    formData.category = selectedCategory;
+
     try {
       // Realizar la solicitud POST para crear una categoría
       const { data } = await axiosInstance.post(
@@ -67,18 +91,18 @@ export const Products = () => {
         }
       );
 
-      // Agregar la nueva categoría a la lista
+      // Agregar el nuevo producto a la lista
 
       setFormData(initialForm);
       setIsLoading(false);
       setRefresh(data);
     } catch (error) {
       setIsLoading(false);
-      console.error("Error al registrar categoría:", error);
+      console.error("Error al registrar el producto:", error);
     }
   };
 
-  // Función para actualizar una categoría
+  // Función para actualizar un product
   const handleUpdateProduct = async (productId) => {
     try {
       console.log(productId);
@@ -94,17 +118,19 @@ export const Products = () => {
         }
       );
 
-      // Actualizar la lista de categorías con la categoría actualizada
-      setProduct((prevProduct) =>
-        prevProduct.map((product) =>
-          product._id === data._id ? data : product
-        )
-      );
+      //   // Actualizar la lista de productos
+      //   setProduct((prevProduct) =>
+      //     prevProduct.map((product) =>
+      //       product._id === data._id ? data : product
+      //     )
+      //   );
 
       console.log(data);
       console.log(data._id);
       // Limpiar el formulario
       setFormData(initialForm);
+      //   Restablece selectedCategory
+      setSelectedCategory("");
       // Restablecer el valor de isLoading (si es necesario)
       setIsLoading(false);
       // Puedes omitir esta línea si no necesitas refrescar la página
@@ -119,17 +145,21 @@ export const Products = () => {
   // Función para manejar el botón "Editar"
   const handleEditClick = (product) => {
     setSelectedProduct(product);
+    // Establece selectedCategory con la categoría del producto seleccionado
+    setSelectedCategory(product.category);
+
     // Llenar el formulario con los datos del elemento seleccionado
     setFormData({
       idUser: product.idUser,
+      img: product.img,
       sku: product.sku,
       name: product.name,
       description: product.description,
       category: product.category,
       subcategory: product.subcategory,
       stock: product.stock,
+      price: product.price,
       variants: product.variants,
-      img: product.img,
     });
   };
 
@@ -167,27 +197,29 @@ export const Products = () => {
         <Table striped bordered hover responsive>
           <thead>
             <tr>
+              <th>img</th>
               <th>SKU</th>
               <th>Producto</th>
               <th>Descripción</th>
               <th>Categoria</th>
               <th>Sub Categoría</th>
               <th>Stock</th>
-              <th>Variantes</th>
-              <th>img</th>
+              <th>Precio</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {product?.map((product) => (
               <tr key={product._id}>
+                <td>{product.img}</td>
                 <td>{product.sku}</td>
                 <td>{product.name}</td>
                 <td>{product.description}</td>
                 <td>{product.category}</td>
                 <td>{product.subcategory}</td>
                 <td>{product.stock}</td>
-                <td>{product.variants}</td>
-                <td>{product.img}</td>
+                <td>{product.price}</td>
+
                 <td>
                   <button onClick={() => handleEditClick(product)}>
                     Editar
@@ -202,10 +234,28 @@ export const Products = () => {
         </Table>
 
         <hr />
-        <h2>Actualizar datos de la tienda</h2>
+        <h2>Actualizar Productos</h2>
         <Form>
           <Form.Group>
-            <Form.Label>Nombre:</Form.Label>
+            <Form.Label>Imagen</Form.Label>
+            <Form.Control
+              type="text"
+              name="img"
+              value={formData.img}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>SKU</Form.Label>
+            <Form.Control
+              type="text"
+              name="sku"
+              value={formData.sku}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Nombre</Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -214,16 +264,7 @@ export const Products = () => {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Logo</Form.Label>
-            <Form.Control
-              type="text"
-              name="logo"
-              value={formData.logo}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Descripción:</Form.Label>
+            <Form.Label>Descripción</Form.Label>
             <Form.Control
               type="text"
               name="description"
@@ -232,32 +273,49 @@ export const Products = () => {
             />
           </Form.Group>
 
+          {/* // Lista para mostrar lo que obtiene del GET de categorias */}
           <Form.Group>
-            <Form.Label>Dirección</Form.Label>
+            <Form.Label>Categoria</Form.Label>
+            <Form.Control
+              as="select"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+            >
+              {category?.map((category) => (
+                <option key={category._id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Sub Categoría</Form.Label>
             <Form.Control
               type="text"
-              name="addresses"
-              value={formData.addresses}
+              name="subcategory"
+              value={formData.subcategory}
               onChange={handleChange}
             />
           </Form.Group>
 
           <Form.Group>
-            <Form.Label>Teléfono</Form.Label>
+            <Form.Label>Stock</Form.Label>
             <Form.Control
-              type="tel"
-              name="phones"
-              value={formData.phones}
+              type="Number"
+              name="stock"
+              value={formData.stock}
               onChange={handleChange}
             />
           </Form.Group>
 
           <Form.Group>
-            <Form.Label>RRSS</Form.Label>
+            <Form.Label>Precio</Form.Label>
             <Form.Control
-              type="text"
-              name="rrss"
-              value={formData.rrss}
+              type="Number"
+              name="price"
+              value={formData.price}
               onChange={handleChange}
             />
           </Form.Group>

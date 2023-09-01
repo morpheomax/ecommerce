@@ -74,6 +74,9 @@ export const Products = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Crear una copia de formData
+    const formDataCopy = { ...formData };
+
     // Actualiza formData.category con el valor seleccionado
     formData.category = selectedCategory;
 
@@ -81,7 +84,7 @@ export const Products = () => {
       // Realizar la solicitud POST para crear una categoría
       const { data } = await axiosInstance.post(
         "/products",
-        formData,
+        formDataCopy,
 
         {
           headers: {
@@ -92,6 +95,7 @@ export const Products = () => {
       );
 
       // Agregar el nuevo producto a la lista
+      setProduct((prevProducts) => [...prevProducts, data]);
 
       setFormData(initialForm);
       setIsLoading(false);
@@ -105,7 +109,7 @@ export const Products = () => {
   // Función para actualizar un product
   const handleUpdateProduct = async (productId) => {
     try {
-      console.log(productId);
+      // console.log(productId);
       // Realizar la solicitud PUT para actualizar una categoría
       const { data } = await axiosInstance.put(
         `/products/${productId}`,
@@ -282,6 +286,9 @@ export const Products = () => {
               value={formData.category}
               onChange={handleChange}
             >
+              <option disabled value="">
+                Seleccione...
+              </option>
               {category?.map((category) => (
                 <option key={category._id} value={category.name}>
                   {category.name}

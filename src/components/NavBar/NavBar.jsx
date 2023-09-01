@@ -187,7 +187,11 @@ export const NavBar = () => {
 
                   <Accordion.Item eventKey="1">
                     <Accordion.Header>Administrar Tienda</Accordion.Header>
-                    <Accordion.Body>- Datos de la tienda - RRSS</Accordion.Body>
+                    <Accordion.Body>
+                      <Link to="/store" className="nav-link">
+                        - Información de la Tienda
+                      </Link>
+                    </Accordion.Body>
                   </Accordion.Item>
 
                   <Accordion.Item eventKey="2">
@@ -218,7 +222,9 @@ export const NavBar = () => {
                   <Accordion.Item eventKey="5">
                     <Accordion.Header>Productos</Accordion.Header>
                     <Accordion.Body>
-                      - Ver Productos - Crear/Editar Productos - Stock
+                      <Link to="/products" className="nav-link">
+                        - Administrar Productos
+                      </Link>
                     </Accordion.Body>
                   </Accordion.Item>
                 </Accordion>

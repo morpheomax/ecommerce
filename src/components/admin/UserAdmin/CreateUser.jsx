@@ -38,8 +38,6 @@ export const CreateUser = ({ editUser, setRefresh }) => {
       setFormData(editUser);
     }
   }, [editUser]);
-  console.log(formData);
-  console.log(editUser);
 
   // Estado para manejar los errores del formulario
   const [errors, setErrors] = useState(initialForm);
@@ -73,6 +71,8 @@ export const CreateUser = ({ editUser, setRefresh }) => {
     try {
       const response = await axiosInstance.get(`/users/check-email/${email}`);
       setEmailExists(response.data.exists);
+      // Mostrar una alerta si el correo electrónico ya existe
+      window.alert("El Email ya se encuentra registrado");
     } catch (error) {
       console.error("Error al verificar el correo electrónico:", error);
     }
@@ -91,7 +91,7 @@ export const CreateUser = ({ editUser, setRefresh }) => {
     }));
 
     // Verificar si el correo electrónico ya existe
-    checkEmailExists(value);
+    // checkEmailExists(value);
   };
 
   // Manejar el envío del formulario
@@ -126,6 +126,8 @@ export const CreateUser = ({ editUser, setRefresh }) => {
       return;
     }
 
+    // Verificar si el correo electrónico ya existe
+    checkEmailExists(formData.email);
     try {
       // Enviar datos al servidor para el registro
       const { data } = await axiosInstance.post("/users/", formData, {
@@ -396,7 +398,7 @@ export const CreateUser = ({ editUser, setRefresh }) => {
                 <Form.Group controlId="postalcode">
                   <Form.Label>Código Postal</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="number"
                     name="postalcode"
                     value={formData.postalcode}
                     onChange={handleChange}

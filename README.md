@@ -46,6 +46,11 @@ Esta tienda web es una plataforma de comercio electrónico desarrollada con la t
 - Node.js para la lógica del servidor.
 - Render.com para el alojamiento en la web.
 
+### Wireframe
+
+![Wireframes inicial](./src/assets/img/wireframe/img1.png)
+![Wireframes inicial](./src/assets/img/wireframe/img2.png)
+
 ### Dependencias utilizadas
 
 - "axios": "^1.4.0",

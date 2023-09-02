@@ -10,7 +10,7 @@ import { LoginPage } from "../pages/LoginPage";
 
 // Import Cliente registrado
 
-import { CustomerPage } from "../pages/user/CustomerPage";
+import { ProfilePage } from "../pages/user/ProfilePage";
 
 // import Administracion
 import { AdminPage } from "../pages/admin/AdminPage";
@@ -35,7 +35,7 @@ export const MainRoutes = () => {
         <Route path="registro" element={<Registro />} />
 
         {/* Ruta Cliente logueado */}
-        <Route path="user" element={<CustomerPage />} />
+        <Route path="profile" element={<ProfilePage />} />
 
         {/* Ruta Administracion */}
 

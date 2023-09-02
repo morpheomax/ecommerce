@@ -20,7 +20,7 @@ export const NavBar = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [store, setStore] = useState(null);
-  const [refresh, setRefresh] = useState(null);
+
   const [categories, setCategories] = useState(null);
 
   const handleLogout = () => {
@@ -48,7 +48,7 @@ export const NavBar = () => {
         console.error("Error al obtener la lista de Productos:", error);
         setIsLoading(false);
       });
-  }, [refresh]);
+  }, []);
 
   // GET de la coleccion Categories
   useEffect(() => {
@@ -66,7 +66,7 @@ export const NavBar = () => {
         console.error("Error al obtener la lista de Productos:", error);
         setIsLoading(false);
       });
-  }, [refresh]);
+  }, []);
 
   return (
     <>
@@ -106,7 +106,7 @@ export const NavBar = () => {
                           <p>Hola! {state.user.name}</p>
                         </NavDropdown.Item>
                         <NavDropdown.Item>
-                          <Link className="nav-link" to="/perfil">
+                          <Link className="nav-link" to="/profile">
                             Perfil
                           </Link>
                         </NavDropdown.Item>

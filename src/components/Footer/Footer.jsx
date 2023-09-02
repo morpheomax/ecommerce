@@ -1,3 +1,7 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from "react";
+import axiosInstance from "../../config/axios";
 import Container from "react-bootstrap/Container";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
@@ -7,8 +11,49 @@ import Form from "react-bootstrap/Form";
 import { config } from "../../config/config";
 import "./Footer.css"; // Importa las variables desde config.js
 
-const categories = ["Joyas de plata", "Inciensos", "Aroma terapia", "Velas"];
+// const categories = ["Joyas de plata", "Inciensos", "Aroma terapia", "Velas"];
+
 export const Footer = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [store, setStore] = useState(null);
+
+  // GET de la coleccion Store
+  useEffect(() => {
+    axiosInstance
+      .get("/store")
+      .then((response) => {
+        if (response.data && Array.isArray(response.data.detail)) {
+          setStore(response.data.detail);
+        } else {
+          console.error("Respuesta inesperada de la API:", response.data);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener la lista de Productos:", error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  // GET de la coleccion Categories
+  useEffect(() => {
+    axiosInstance
+      .get("/categories")
+      .then((response) => {
+        if (response.data && Array.isArray(response.data.detail)) {
+          setCategories(response.data.detail);
+        } else {
+          console.error("Respuesta inesperada de la API:", response.data);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error al obtener la lista de Productos:", error);
+        setIsLoading(false);
+      });
+  }, []);
+
   return (
     <footer>
       <Container fluid>
@@ -37,8 +82,8 @@ export const Footer = () => {
             <ul className="list-unstyled">
               {categories.map((category, index) => (
                 <li key={index}>
-                  <Link className="nav-link" to={`categorias/${category}`}>
-                    {category}
+                  <Link className="nav-link" to={`categorias/${category.name}`}>
+                    {category.name}
                   </Link>
                 </li>
               ))}
@@ -46,12 +91,15 @@ export const Footer = () => {
           </Col>
           <Col>
             <h5>LINKS</h5>
+
             <ul className="list-unstyled">
-              {Array(4)
-                .fill()
-                .map((_, index) => (
-                  <li key={index}>Lista</li>
-                ))}
+              {categories.map((category, index) => (
+                <li key={index}>
+                  <Link className="nav-link" to={`categorias/${category.name}`}>
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </Col>
           <Col>
@@ -70,7 +118,12 @@ export const Footer = () => {
           </Col>
         </Row>
         <Row className="bg-dark text-white p-2 text-center" xs={1}>
-          <Col>© 2020 Copyright: {config.nameStore}</Col>{" "}
+          <Col>
+            © 2020 Copyright:
+            <strong style={{ textTransform: "uppercase" }}>
+              {store?.map((store) => store.name)}
+            </strong>
+          </Col>{" "}
           {/* Usa la variable desde config.js */}
         </Row>
       </Container>

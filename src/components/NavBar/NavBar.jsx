@@ -99,7 +99,7 @@ export const NavBar = () => {
               <div className="col-1">
                 <NavDropdown title={<i className="bi bi-person-circle"></i>}>
                   {state?.user ? ( // Verificar si el usuario está autenticado
-                    state.user.rol !== "cliente" ? (
+                    state.user.rol !== "Cliente" ? (
                       <>
                         <NavDropdown.Item>
                           {/* Mostrar el nombre del usuario */}
@@ -126,7 +126,7 @@ export const NavBar = () => {
                           </Link>
                         </NavDropdown.Item>
                       </>
-                    ) : state.user.rol === "cliente" ? (
+                    ) : state.user.rol === "Cliente" ? (
                       <>
                         <NavDropdown.Item>
                           {/* Mostrar el nombre del usuario */}
@@ -222,7 +222,7 @@ export const NavBar = () => {
             {/* -------------------------- */}
 
             {/* Sesion iniciada Administrado*/}
-            {state?.user && state.user.rol !== "cliente" ? ( // Verificar si el usuario está autenticado y su rol
+            {state?.user && state.user.rol !== "Cliente" ? ( // Verificar si el usuario está autenticado y su rol
               <>
                 <Accordion>
                   {/*defaultActiveKey="0"*/}

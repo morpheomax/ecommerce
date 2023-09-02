@@ -27,6 +27,7 @@ export const CreateUser = ({ editUser, setRefresh }) => {
     phone: "",
     rol: "",
   };
+
   // Obtener el contexto del usuario para manejar el estado global de autenticación
   const [, dispatch] = useContext(UserContext);
 

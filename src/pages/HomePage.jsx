@@ -23,10 +23,6 @@ export const HomePage = () => {
       <div>
         <Sold />
       </div>
-      <h1>Más Visto</h1>
-      <h2>Ofertas</h2>
-      <h2>Nuevos Productos</h2>
-      <h2>Categorías destacadas</h2>
     </>
   );
 };

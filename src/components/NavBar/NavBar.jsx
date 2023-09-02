@@ -300,16 +300,20 @@ export const NavBar = () => {
                       title="Categorias"
                       id="offcanvasNavbarDropdown"
                     >
-                      {categories.map((category) => (
-                        <NavDropdown.Item key={category._id}>
-                          <Link
-                            className="nav-link"
-                            to={`categorias/${category.name}`}
-                          >
-                            {category.name}
-                          </Link>
-                        </NavDropdown.Item>
-                      ))}
+                      {categories ? (
+                        categories.map((category) => (
+                          <NavDropdown.Item key={category._id}>
+                            <Link
+                              className="nav-link"
+                              to={`categorias/${category.name}`}
+                            >
+                              {category.name}
+                            </Link>
+                          </NavDropdown.Item>
+                        ))
+                      ) : (
+                        <NavDropdown.Item>Loading...</NavDropdown.Item>
+                      )}
                     </NavDropdown>
 
                     <li className="nav-item">
@@ -333,7 +337,6 @@ export const NavBar = () => {
                 </div>
               </>
             )}
-
             {/* -------------------------- */}
           </div>
         </div>

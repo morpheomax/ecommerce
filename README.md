@@ -60,8 +60,4 @@ Esta tienda web es una plataforma de comercio electrónico desarrollada con la t
 - "react-dom": "^18.2.0",
 - "react-router-dom": "^6.14.2"
 
-## Licencia
-
-Este proyecto está bajo la Licencia MIT.
-
 ---

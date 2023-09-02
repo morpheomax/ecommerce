@@ -65,7 +65,7 @@ export const CategoriesPage = () => {
     <>
       {category}
       <div className="mt-4">
-        <h2>Productos de la categoría Inciensos</h2>
+        <h2>{category}</h2>
         <Table striped bordered hover responsive>
           <thead>
             <tr>

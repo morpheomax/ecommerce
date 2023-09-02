@@ -14,7 +14,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useContext } from "react";
-import { Table } from "react-bootstrap";
+import { Button, Card, Table } from "react-bootstrap";
 import axiosInstance from "../config/axios";
 import { UserContext } from "../context/user/userContext";
 import { useParams } from "react-router-dom";
@@ -57,41 +57,27 @@ export const CategoriesPage = () => {
   }, []);
 
   // Filtrar los productos por la categoría "Inciensos"
-  const inciensosProducts = product.filter(
-    (item) => item.category === category
-  );
+  const filteredProducts = product.filter((item) => item.category === category);
 
   return (
     <>
-      {category}
       <div className="mt-4">
         <h2>{category}</h2>
-        <Table striped bordered hover responsive>
-          <thead>
-            <tr>
-              <th>img</th>
-              <th>Producto</th>
-              <th>Descripción</th>
-              <th>Precio</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inciensosProducts.map((product) => (
-              <tr key={product._id}>
-                <td>{product.img}</td>
 
-                <td>{product.name}</td>
-                <td>{product.description}</td>
-
-                <td>{product.price}</td>
-                <td>
-                  <button>Agregar al carro</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        {filteredProducts.map((product) => (
+          <Card
+            key={product._id}
+            style={{ width: "18rem", marginBottom: "20px" }}
+          >
+            <Card.Img variant="top" src={product.img} />
+            <Card.Body>
+              <Card.Title>{product.name}</Card.Title>
+              <Card.Text>{product.description}</Card.Text>
+              <Card.Text>Precio: {product.price}</Card.Text>
+              <Button variant="primary">Agregar al carro</Button>
+            </Card.Body>
+          </Card>
+        ))}
       </div>
     </>
   );

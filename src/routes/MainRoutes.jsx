@@ -4,9 +4,12 @@ import { Route, Routes } from "react-router-dom";
 import { HomePage } from "../pages/HomePage";
 import { AboutPage } from "../pages/AboutPage";
 import { CategoriesPage } from "../pages/CategoriesPage";
+import { DetailProductPage } from "../pages/DetailProductPage";
 import { ContactPage } from "../pages/ContactPage";
 import { Registro } from "../pages/RegisterPage";
 import { LoginPage } from "../pages/LoginPage";
+import { CartPage } from "../pages/CartPage";
+import { SuccessPurchase } from "../pages/SuccessPurchase";
 
 // Import Cliente registrado
 
@@ -28,11 +31,14 @@ export const MainRoutes = () => {
         <Route path="nosotros" element={<AboutPage />} />
 
         <Route path="categorias/:category" element={<CategoriesPage />} />
+        <Route path="/products/:id" element={<DetailProductPage />} />
 
         <Route path="contacto" element={<ContactPage />} />
 
         <Route path="login" element={<LoginPage />} />
         <Route path="registro" element={<Registro />} />
+        <Route path="cart" element={<CartPage />} />
+        <Route path="success-purchase" element={<SuccessPurchase />} />
 
         {/* Ruta Cliente logueado */}
         <Route path="profile" element={<ProfilePage />} />

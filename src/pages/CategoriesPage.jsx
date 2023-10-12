@@ -17,7 +17,9 @@ import { useState, useEffect, useContext } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import axiosInstance from "../config/axios";
 import { UserContext } from "../context/user/userContext";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 const initialForm = {
   img: "",
   sku: "",
@@ -32,6 +34,7 @@ const initialForm = {
 
 export const CategoriesPage = () => {
   const { category } = useParams();
+  const navigate = useNavigate(); // Obtenemos la función de navegación
 
   const token = JSON.parse(localStorage.getItem("loginFormData"));
   const [product, setProduct] = useState([]);
@@ -41,7 +44,7 @@ export const CategoriesPage = () => {
 
   useEffect(() => {
     axiosInstance
-      .get("/products")
+      .get("/products/")
       .then((response) => {
         if (response.data && Array.isArray(response.data.detail)) {
           setProduct(response.data.detail);
@@ -72,9 +75,22 @@ export const CategoriesPage = () => {
             <Card.Img variant="top" src={product.img} />
             <Card.Body>
               <Card.Title>{product.name}</Card.Title>
+
               <Card.Text>{product.description}</Card.Text>
               <Card.Text>Precio: {product.price}</Card.Text>
-              <Button variant="primary">Agregar al carro</Button>
+              <Button
+                variant="primary"
+                onClick={() => navigate(`/products/${product._id}`)} // Debes pasar product._id como productId
+              >
+                Agregar al carro
+              </Button>
+              {/* <Link
+                variant="primary"
+                className="nav-link"
+                to={`/products/${product._id}`}
+              >
+                {product._id}
+              </Link> */}
             </Card.Body>
           </Card>
         ))}

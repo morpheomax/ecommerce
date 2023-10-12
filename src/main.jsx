@@ -11,13 +11,13 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      {/* <AuthContextProvider> */}
-      <UserProvider>
-        <App />
-      </UserProvider>
-      {/* </AuthContextProvider> */}
-    </BrowserRouter>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <BrowserRouter>
+    {/* <AuthContextProvider> */}
+    <UserProvider>
+      <App />
+    </UserProvider>
+    {/* </AuthContextProvider> */}
+  </BrowserRouter>
+  // </React.StrictMode>
 );

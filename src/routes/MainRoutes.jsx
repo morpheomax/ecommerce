@@ -10,7 +10,8 @@ import { Registro } from "../pages/RegisterPage";
 import { LoginPage } from "../pages/LoginPage";
 import { CartPage } from "../pages/CartPage";
 import { SuccessPurchase } from "../pages/SuccessPurchase";
-
+import { PendingPurchase } from "../pages/PendingPurchase";
+import { FailurePurchase } from "../pages/FailurePurchase";
 // Import Cliente registrado
 
 import { ProfilePage } from "../pages/user/ProfilePage";
@@ -38,7 +39,9 @@ export const MainRoutes = () => {
         <Route path="login" element={<LoginPage />} />
         <Route path="registro" element={<Registro />} />
         <Route path="cart" element={<CartPage />} />
-        <Route path="success-purchase" element={<SuccessPurchase />} />
+        <Route path="success-payment" element={<SuccessPurchase />} />
+        <Route path="pending-payment" element={<PendingPurchase />} />
+        <Route path="failure-payment" element={<FailurePurchase />} />
 
         {/* Ruta Cliente logueado */}
         <Route path="profile" element={<ProfilePage />} />

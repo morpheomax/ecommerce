@@ -10,13 +10,15 @@ const initialCart = [
 ];
 
 export const CartPage = () => {
-  //   const [initialCarrito] = useContext(carritoContext);
+  //Los datos debo enviarlos con un dispatch y aca los recupero con:
+  //   const [initialCart,] = useContext(carritoContext);
 
   const [carritoDeCompras, setCarritoDeCompras] = useState(initialCart);
 
   const [precioTotal, setPrecioTotal] = useState(0);
 
   const comprar = async () => {
+    // const paymentUrl = "https://backendproyecto5.onrender.com/payment/create-payment";
     const paymentUrl = "http://localhost:8080/payment/create-payment";
     const { data } = await axios.post(paymentUrl);
     // console.log(data);
@@ -50,7 +52,7 @@ export const CartPage = () => {
       </ul>
 
       <h2>Precio Total: {precioTotal}</h2>
-      <button onClick={comprar}>Comprar</button>
+      <button onClick={comprar}>Continuar compra</button>
     </>
   );
 };

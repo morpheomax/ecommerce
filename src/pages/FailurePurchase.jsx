@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-export const SuccessPurchase = () => {
+export const FailurePurchase = () => {
   const location = useLocation();
   const [queryParams, setQueryParams] = useState({});
 
@@ -13,13 +13,9 @@ export const SuccessPurchase = () => {
     setQueryParams(params);
   }, [location.search]);
 
-  // useEffect(() => {
-  //   fetch("http://mibackend.com/payment/successPurchase");
-  // }, []);
-
   return (
     <>
-      <h2>Tu compra ha sido un éxito</h2>
+      <h2>No se ha procesado la compra</h2>
       <div>
         <h3>Detalles de la compra:</h3>
         <ul>

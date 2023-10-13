@@ -6,11 +6,6 @@ import { useState } from "react";
 export const CartProduct = ({ producto, setCarritoDeCompras }) => {
   const [contador, setContador] = useState(producto.quantity);
 
-  const productoModificado = {
-    ...producto,
-    quantity: contador,
-  };
-
   const aumentar = () => {
     setCarritoDeCompras((productos) => {
       const productoArray = productos.map((product) => {

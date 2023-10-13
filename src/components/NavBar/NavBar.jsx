@@ -188,7 +188,7 @@ export const NavBar = () => {
                 </Link>
               </div>
               <div className="col-1">
-                <Link className="nav-link" to="/compras">
+                <Link className="nav-link" to="/cart">
                   <i className="bi bi-bag"></i>
                 </Link>
               </div>

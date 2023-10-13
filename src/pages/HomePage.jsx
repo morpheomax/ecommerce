@@ -12,8 +12,21 @@ export const HomePage = () => {
       <Header />
 
       <BlockInfo />
-      <hr />
 
+      <div className="flex">
+        <div>
+          <h2>Usuario Administrador</h2>
+          <h3>Usuario: admin@admin.cl</h3>
+          <h3>Password: Aa1234567</h3>
+        </div>
+
+        <div>
+          <h2>Usuario Cliente</h2>
+          <h3>Usuario: cliente@cliente.cl</h3>
+          <h3>Password: Aa1234567</h3>
+        </div>
+        <hr />
+      </div>
       {state?.user && (
         <h2>
           Bienvenido {state.user.name} {state.user.lastname}

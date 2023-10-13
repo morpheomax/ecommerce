@@ -10,6 +10,7 @@ import { config } from "../../config/config";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Accordion from "react-bootstrap/Accordion";
 import { types } from "../../context/user/userReducer";
+import { CartIcon } from "../CartIcon/CartIcon";
 
 // const categories = ["Joyas de plata", "Inciensos", "Aroma terapia", "Velas"];
 
@@ -190,6 +191,9 @@ export const NavBar = () => {
               <div className="col-1">
                 <Link className="nav-link" to="/cart">
                   <i className="bi bi-bag"></i>
+                  <div className="col-1">
+                    <CartIcon />
+                  </div>
                 </Link>
               </div>
             </div>

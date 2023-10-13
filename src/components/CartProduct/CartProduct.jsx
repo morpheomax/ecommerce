@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
 import { useState } from "react";
 
 export const CartProduct = ({ producto, setCarritoDeCompras }) => {
-  const [contador, setContador] = useState(producto.quantity);
+  const [contador, setContador] = useState(producto ? producto.quantity : 0);
 
   const aumentar = () => {
     setCarritoDeCompras((productos) => {
@@ -42,14 +41,16 @@ export const CartProduct = ({ producto, setCarritoDeCompras }) => {
 
   return (
     <>
-      <li>
-        <h3>{producto.price}</h3>
-        <p>{producto.title}</p>
-        <button onClick={disminuir}>-1</button>
-        <p>{contador}</p>
-        <button onClick={aumentar}>+1</button>
-        <p>Precio Total Producto{producto.price * producto.quantity}</p>
-      </li>
+      <tr>
+        <td>{producto.title}</td>
+        <td>
+          <button onClick={disminuir}>-1</button>
+          <span>{contador}</span>
+          <button onClick={aumentar}>+1</button>
+        </td>
+        <td>{producto.price}</td>
+        <td>{producto.price * producto.quantity}</td>
+      </tr>
     </>
   );
 };

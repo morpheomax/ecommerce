@@ -9,13 +9,16 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { CartProvider } from "./context/cart/CartProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // <React.StrictMode>
   <BrowserRouter>
     {/* <AuthContextProvider> */}
     <UserProvider>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </UserProvider>
     {/* </AuthContextProvider> */}
   </BrowserRouter>
